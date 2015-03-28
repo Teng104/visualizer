@@ -161,6 +161,19 @@ void queue_str_task2(void *pvParameters)
 	queue_str_task("Hello 2\n\r", 50);
 }
 
+void periodic_task(void *pvParameters)
+{
+  int a = 0;
+
+  while (1)
+  {
+    if (a=0)
+      a += 1;
+    else
+      a -= 1;
+  }
+}
+
 void serial_readwrite_task(void *pvParameters)
 {
 	serial_str_msg msg;
@@ -247,6 +260,16 @@ int main()
 	            (signed portCHAR *) "Serial Read/Write",
 	            512 /* stack size */, NULL,
 	            tskIDLE_PRIORITY + 10, NULL);
+
+  xTaskCreate(periodic_task,
+              (signed portCHAR *) "Periodic Task-1",
+	            512 /* stack size */, NULL,
+	            tskIDLE_PRIORITY + 1, NULL);
+
+  xTaskCreate(periodic_task,
+              (signed portCHAR *) "Periodic Task-2",
+	            512 /* stack size */, NULL,
+	            tskIDLE_PRIORITY + 1, NULL);
 
 	/* Start running the tasks. */
 	vTaskStartScheduler();
