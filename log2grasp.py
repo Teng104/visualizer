@@ -13,6 +13,8 @@ TRACE_INTERRUPT = False
 log = open('log', 'r')
 lines = log.readlines()
 
+switch = open('switch_time_log', 'w')
+
 tasks = {}
 events = []
 mutexes = {}
@@ -40,6 +42,8 @@ for line in lines :
 
 		out_time = (float(tick) + (float(tick_reload) - float(out_minitick)) / float(tick_reload)) / 100 * 1000;
 		in_time  = (float(tick) + (float(tick_reload) - float(in_minitick))  / float(tick_reload)) / 100 * 1000;
+
+		switch.write('Switch time between %s and %s is %f ms.\n' % (out_task, in_task, (in_time - out_time)))
 
 		event = {}
 		event['type'] = 'task out'
@@ -247,3 +251,4 @@ for id in tasks :
 					(events[-1]['time'], id))
 
 grasp.close()
+switch.close()
